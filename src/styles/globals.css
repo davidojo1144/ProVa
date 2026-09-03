@@ -220,10 +220,12 @@
     letter-spacing: -0.02em;
   }
 
-  /* Flat design has no z-axis: nothing casts a shadow, anywhere. */
-  *,
-  *::before,
-  *::after {
+  /* Flat design has no z-axis: nothing in the product casts a shadow.
+     The marketing route opts out via [data-depth], where a 3D showcase is
+     the point rather than a violation. */
+  *:not([data-depth], [data-depth] *),
+  *:not([data-depth], [data-depth] *)::before,
+  *:not([data-depth], [data-depth] *)::after {
     box-shadow: none !important;
   }
 
