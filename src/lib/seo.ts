@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 
-const SITE_NAME = "App";
-const SITE_DESCRIPTION = "Built with Next.js.";
-const SITE_URL = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+const SITE_NAME = "ProVA Hiring Tracker";
+const SITE_DESCRIPTION =
+  "Track candidates through your hiring pipeline — from application to offer.";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
 export function constructMetadata({
   title,
