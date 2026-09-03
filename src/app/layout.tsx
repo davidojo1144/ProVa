@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { Providers } from "@/components/common/providers";
-import { constructMetadata } from "@/lib/seo";
+import { buildStructuredData, constructMetadata } from "@/lib/seo";
 import "@/styles/globals.css";
 
 const geistSans = Geist({
@@ -25,6 +25,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        <script
+          type="application/ld+json"
+          // Static, app-authored JSON — no user input reaches this string.
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(buildStructuredData()),
+          }}
+        />
         <Providers>{children}</Providers>
       </body>
     </html>
