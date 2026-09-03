@@ -141,6 +141,20 @@
 /* Spring stack for toasts: mass 1, stiffness 180, damping 20 — sampled as a
    linear() curve so it runs on the compositor with no animation library. */
 @layer components {
+  /* Toasts never exceed the viewport on a phone. */
+  [data-sonner-toaster] {
+    --width: min(calc(100vw - 2rem), 22rem);
+    max-width: calc(100vw - 2rem);
+  }
+
+  /* Swipeable, snap-scrolled regions keep their own scrollbar out of the way. */
+  .scroll-area-plain {
+    scrollbar-width: none;
+  }
+  .scroll-area-plain::-webkit-scrollbar {
+    display: none;
+  }
+
   [data-sonner-toaster] [data-sonner-toast] {
     transition-property: transform, opacity, height;
     transition-duration: 520ms;

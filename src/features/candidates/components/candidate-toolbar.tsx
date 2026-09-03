@@ -99,11 +99,16 @@ export function CandidateToolbar({
           )}
         </div>
 
-        {/* Controls scroll sideways on narrow phones instead of wrapping raggedly. */}
-        <div className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-0.5 lg:mx-0 lg:ml-auto lg:overflow-visible lg:px-0 lg:pb-0">
+        {/* Two tidy rows on phones, one inline row from large screens up. */}
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4 lg:ml-auto lg:flex lg:items-center">
           <DropdownMenu>
             <DropdownMenuTrigger
-              render={<Button variant="outline" className="shrink-0" />}
+              render={
+                <Button
+                  variant="outline"
+                  className="w-full justify-start lg:w-fit lg:shrink-0"
+                />
+              }
             >
               <ListFilter />
               Stage
@@ -141,7 +146,10 @@ export function CandidateToolbar({
               onChange({ ...filters, minRating: Number(value) })
             }
           >
-            <SelectTrigger aria-label="Filter by rating" className="shrink-0">
+            <SelectTrigger
+              aria-label="Filter by rating"
+              className="w-full lg:w-fit lg:shrink-0"
+            >
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -160,7 +168,10 @@ export function CandidateToolbar({
               onChange({ ...filters, sort: value as SortKey })
             }
           >
-            <SelectTrigger aria-label="Sort candidates" className="shrink-0">
+            <SelectTrigger
+              aria-label="Sort candidates"
+              className="w-full lg:w-fit lg:shrink-0"
+            >
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -172,7 +183,9 @@ export function CandidateToolbar({
             </SelectContent>
           </Select>
 
-          <div className="shrink-0">{viewSwitch}</div>
+          <div className="lg:shrink-0 [&_[data-slot=tabs-list]]:w-full lg:[&_[data-slot=tabs-list]]:w-fit [&_[data-slot=tabs-trigger]]:flex-1">
+            {viewSwitch}
+          </div>
         </div>
       </div>
 

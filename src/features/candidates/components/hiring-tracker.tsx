@@ -113,7 +113,7 @@ export function HiringTracker() {
   return (
     <div className="mx-auto flex w-full max-w-[120rem] flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
       <header className="flex flex-wrap items-start justify-between gap-3">
-        <div>
+        <div className="min-w-0">
           <h1 className="text-title font-semibold tracking-tight">
             Hiring Tracker
           </h1>
@@ -121,7 +121,7 @@ export function HiringTracker() {
             Track every applicant from first application to signed offer.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex w-full items-center gap-2 sm:w-auto">
           <ThemeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger
@@ -158,7 +158,7 @@ export function HiringTracker() {
               </DropdownMenuGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Button onClick={() => openAdd()}>
+          <Button onClick={() => openAdd()} className="ml-auto sm:ml-0">
             <Plus />
             Add candidate
           </Button>

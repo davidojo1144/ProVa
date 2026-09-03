@@ -39,7 +39,7 @@ export function CandidateBoard({
   };
 
   return (
-    <div className="-mx-4 snap-x snap-mandatory overflow-x-auto px-4 pb-2 sm:mx-0 sm:snap-none sm:px-0">
+    <div className="scroll-area-plain -mx-4 snap-x snap-mandatory overflow-x-auto px-4 pb-2 sm:mx-0 sm:snap-none sm:overflow-visible sm:px-0">
       {/* Phones swipe one stage at a time; from tablets up the board fits the width. */}
       <div className="grid min-w-max auto-cols-[85vw] grid-flow-col gap-3 sm:min-w-0 sm:auto-cols-auto sm:grid-flow-row sm:grid-cols-3 xl:grid-cols-6">
         {STAGE_LIST.map((stage) => {
