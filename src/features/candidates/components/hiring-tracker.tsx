@@ -33,6 +33,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ContainerTextFlip } from "@/components/ui/container-text-flip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { CandidateBoard } from "@/features/candidates/components/candidate-board";
@@ -126,8 +127,12 @@ export function HiringTracker() {
         <div className="relative mx-auto flex w-full max-w-[120rem] flex-wrap items-end justify-between gap-4 px-4 py-8 sm:px-6 lg:px-10 lg:py-10">
           <div className="min-w-0">
             <p className="label-caps text-white/70">ProVA</p>
-            <h1 className="text-title mt-1 leading-none font-extrabold">
-              Hiring Tracker
+            <h1 className="text-title mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 leading-none font-extrabold">
+              Hiring, made
+              <ContainerTextFlip
+                words={["visible", "faster", "fairer", "simple"]}
+                className="text-title"
+              />
             </h1>
             <p className="text-body mt-2 max-w-md text-white/80">
               Track every applicant from first application to signed offer.
