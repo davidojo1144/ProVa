@@ -82,7 +82,8 @@ function CandidateDetail({
 
   return (
     <>
-      <SheetHeader className="gap-3">
+      {/* pr-12 keeps the header clear of the sheet's close button. */}
+      <SheetHeader className="gap-3 pr-12">
         <div className="flex items-start gap-3">
           <span className="bg-muted text-muted-foreground flex size-11 shrink-0 items-center justify-center rounded-full text-sm font-medium">
             {initials(candidate.name)}
@@ -232,7 +233,7 @@ function CandidateDetail({
                   className="group/note bg-muted/50 flex items-start gap-2 rounded-lg p-3"
                 >
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm break-words whitespace-pre-wrap">
+                    <p className="text-sm wrap-break-word whitespace-pre-wrap">
                       {item.body}
                     </p>
                     <p className="text-muted-foreground mt-1 text-xs">
