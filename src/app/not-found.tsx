@@ -22,7 +22,7 @@ export default function NotFound() {
         <Button
           nativeButton={false}
           className="bg-background text-brand-blue-strong hover:bg-background mt-2 hover:brightness-95"
-          render={<Link href="/">Back to the tracker</Link>}
+          render={<Link href="/hire">Back to the tracker</Link>}
         />
       </div>
     </main>

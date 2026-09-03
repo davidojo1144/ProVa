@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import {
   Database,
   KanbanSquare,
@@ -126,7 +127,12 @@ export function HiringTracker() {
 
         <div className="relative mx-auto flex w-full max-w-[120rem] flex-wrap items-end justify-between gap-4 px-4 py-8 sm:px-6 lg:px-10 lg:py-10">
           <div className="min-w-0">
-            <p className="label-caps text-white/70">ProVA</p>
+            <Link
+              href="/"
+              className="label-caps rounded-sm text-white/70 transition-colors hover:text-white"
+            >
+              ProVA
+            </Link>
             <h1 className="text-title mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 leading-none font-extrabold">
               Hiring, made
               <ContainerTextFlip

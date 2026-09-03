@@ -1,17 +1,17 @@
 # ProVA Hiring Tracker
 
-> A single-page hiring pipeline tracker: add candidates, move them through
-> stages, rate them, keep interview notes, and search the pipeline. All data
-> lives in the visitor's own browser (localStorage); there is no backend and no
-> account.
+> A hiring pipeline tracker: add candidates, move them through stages, rate
+> them, keep interview notes, and search the pipeline. All data lives in the
+> visitor's own browser (localStorage); there is no backend and no account.
 
 ## Pages
 
-- [Hiring Tracker](/): the whole application — pipeline board, list view,
+- [Home](/): what the tracker does, with a preview of the board.
+- [Hiring board](/hire): the application itself — pipeline board, list view,
   candidate detail panel with notes and ratings.
 
 ## Notes for agents
 
-- The app is client-rendered after hydration; candidate data is per-browser and
-  never leaves the device, so there is nothing to crawl beyond the shell.
+- The board is client-rendered after hydration; candidate data is per-browser
+  and never leaves the device, so there is nothing to crawl beyond the shell.
 - Source: https://github.com/davidojo1144/ProVa

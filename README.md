@@ -11,9 +11,10 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The board starts empty —
-use **Load sample data** (or the ⋮ menu in the header) to fill it with eight
-demo candidates spread across the pipeline.
+Open [http://localhost:3000](http://localhost:3000) for the landing page; the
+tracker itself lives at [/hire](http://localhost:3000/hire). The board starts
+empty — use **Load sample data** (or the ⋮ menu in the header) to fill it with
+eight demo candidates spread across the pipeline.
 
 No environment variables are required. `.env.example` has the single optional
 one (`NEXT_PUBLIC_SITE_URL`), used only to build absolute URLs for SEO metadata
@@ -119,11 +120,13 @@ client chunk from 663 KB to 409 KB.
 
 ```
 src/
-  app/            route, layout, error/loading/not-found, robots, sitemap, OG image
+  app/            landing page (/), tracker (/hire), error/loading/not-found,
+                  robots, sitemap, OG image
   components/
     ui/           shadcn primitives (only the ones in use)
     common/       providers, theme toggle, toast system
   features/
+    marketing/    landing-page pieces (board preview)
     candidates/
       components/ board, table, cards, form, detail panel, toolbar, stats
       hooks/      useCandidateActions — store mutations plus feedback
