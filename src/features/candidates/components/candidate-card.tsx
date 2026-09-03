@@ -4,9 +4,9 @@ import { MessageSquare, Paperclip } from "lucide-react";
 
 import type { Candidate } from "@/types/candidate";
 
-import { Badge } from "@/components/ui/badge";
 import { CandidateActionsMenu } from "@/features/candidates/components/candidate-actions-menu";
 import { RatingStars } from "@/features/candidates/components/rating-stars";
+import { STAGE_META } from "@/features/candidates/lib/stages";
 import { formatRelativeTime } from "@/lib/format";
 import { haptic } from "@/lib/haptics";
 import { cn } from "@/lib/utils";
@@ -30,6 +30,8 @@ export function CandidateCard({
   onDragEnd,
   dragging,
 }: CandidateCardProps) {
+  const stage = STAGE_META[candidate.stage];
+
   return (
     <div
       draggable
@@ -41,18 +43,22 @@ export function CandidateCard({
       }}
       onDragEnd={onDragEnd}
       className={cn(
-        "group/card bg-card ring-foreground/10 hover:ring-foreground/20 flex cursor-grab flex-col gap-2 rounded-lg p-3 ring-1 transition active:cursor-grabbing",
-        dragging && "opacity-40",
+        // A solid edge in the stage colour ties the card to its column.
+        "group/card bg-card flex cursor-grab flex-col gap-2 rounded-md border-l-4 p-3 transition-transform duration-200 hover:scale-[1.02] active:cursor-grabbing",
+        stage.edgeClass,
+        dragging && "scale-95 opacity-40",
       )}
     >
       <div className="flex items-start justify-between gap-2">
         <button
           type="button"
           onClick={onOpen}
-          className="focus-visible:ring-ring/50 flex-1 rounded-sm text-left outline-none focus-visible:ring-3"
+          className="flex-1 rounded-sm text-left outline-none"
         >
-          <p className="text-sm leading-tight font-medium">{candidate.name}</p>
-          <p className="text-muted-foreground mt-0.5 text-xs">
+          <p className="text-sm leading-tight font-bold tracking-tight">
+            {candidate.name}
+          </p>
+          <p className="text-muted-foreground mt-0.5 text-xs font-medium">
             {candidate.role}
           </p>
         </button>
@@ -69,29 +75,32 @@ export function CandidateCard({
       {candidate.tags.length > 0 && (
         <div className="flex flex-wrap gap-1">
           {candidate.tags.slice(0, 3).map((tag) => (
-            <Badge key={tag} variant="secondary" className="font-normal">
+            <span
+              key={tag}
+              className="bg-muted text-muted-foreground rounded-sm px-1.5 py-0.5 text-[0.7rem] font-medium"
+            >
               {tag}
-            </Badge>
+            </span>
           ))}
           {candidate.tags.length > 3 && (
-            <Badge variant="ghost" className="text-muted-foreground">
+            <span className="text-muted-foreground/70 px-1 py-0.5 text-[0.7rem] font-semibold">
               +{candidate.tags.length - 3}
-            </Badge>
+            </span>
           )}
         </div>
       )}
 
-      <div className="text-muted-foreground flex items-center gap-3 text-xs">
+      <div className="text-muted-foreground flex items-center gap-3 text-[0.7rem] font-medium">
         <span>{formatRelativeTime(candidate.updatedAt)}</span>
         {candidate.notes.length > 0 && (
           <span className="flex items-center gap-1">
-            <MessageSquare className="size-3" />
+            <MessageSquare className="size-3" strokeWidth={2.5} />
             {candidate.notes.length}
           </span>
         )}
         {candidate.resumeUrl && (
           <span className="flex items-center gap-1">
-            <Paperclip className="size-3" />
+            <Paperclip className="size-3" strokeWidth={2.5} />
             CV
           </span>
         )}

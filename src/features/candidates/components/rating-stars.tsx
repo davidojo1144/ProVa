@@ -35,8 +35,8 @@ export function RatingStars({
             className={cn(
               SIZES[size],
               star <= value
-                ? "fill-amber-400 text-amber-400"
-                : "text-muted-foreground/30",
+                ? "fill-brand-amber text-brand-amber"
+                : "text-foreground/20",
             )}
           />
         ))}
@@ -53,14 +53,14 @@ export function RatingStars({
           onClick={() => onChange(star)}
           aria-label={star === value ? `Clear rating` : `Rate ${star} out of 5`}
           aria-pressed={star <= value}
-          className="focus-visible:ring-ring/50 rounded-sm p-0.5 transition-transform outline-none hover:scale-110 focus-visible:ring-3"
+          className="rounded-sm p-0.5 transition-transform duration-200 outline-none hover:scale-125"
         >
           <Star
             className={cn(
               SIZES[size],
               star <= value
-                ? "fill-amber-400 text-amber-400"
-                : "text-muted-foreground/40",
+                ? "fill-brand-amber text-brand-amber"
+                : "text-foreground/25",
             )}
           />
         </button>

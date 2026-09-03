@@ -21,31 +21,31 @@ export function CandidateTable({
   onDelete,
 }: CandidateTableProps) {
   return (
-    <div className="ring-foreground/10 overflow-x-auto rounded-xl ring-1">
+    <div className="border-border overflow-x-auto rounded-lg border-2">
       <table className="w-full border-collapse text-sm">
         <thead>
-          <tr className="text-muted-foreground border-border border-b text-left text-xs">
-            <th scope="col" className="px-4 py-2.5 font-medium">
+          <tr className="bg-muted text-muted-foreground border-border border-b-2 text-left">
+            <th scope="col" className="label-caps px-4 py-3">
               Candidate
             </th>
             <th
               scope="col"
-              className="hidden px-4 py-2.5 font-medium md:table-cell"
+              className="label-caps hidden px-4 py-3 md:table-cell"
             >
               Role
             </th>
-            <th scope="col" className="px-4 py-2.5 font-medium">
+            <th scope="col" className="label-caps px-4 py-3">
               Stage
             </th>
             <th
               scope="col"
-              className="hidden px-4 py-2.5 font-medium sm:table-cell"
+              className="label-caps hidden px-4 py-3 sm:table-cell"
             >
               Rating
             </th>
             <th
               scope="col"
-              className="hidden px-4 py-2.5 font-medium lg:table-cell"
+              className="label-caps hidden px-4 py-3 lg:table-cell"
             >
               Updated
             </th>
@@ -58,19 +58,21 @@ export function CandidateTable({
           {candidates.map((candidate) => (
             <tr
               key={candidate.id}
-              className="border-border hover:bg-muted/40 border-b transition-colors last:border-0"
+              className="border-border hover:bg-muted border-b transition-colors last:border-0"
             >
               <td className="px-4 py-2.5">
                 <button
                   type="button"
                   onClick={() => onOpen(candidate)}
-                  className="focus-visible:ring-ring/50 flex items-center gap-2.5 rounded-sm text-left outline-none focus-visible:ring-3"
+                  className="flex items-center gap-3 rounded-sm text-left outline-none"
                 >
-                  <span className="bg-muted text-muted-foreground flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-medium">
+                  <span className="bg-brand-ink text-background flex size-9 shrink-0 items-center justify-center rounded-md text-xs font-bold">
                     {initials(candidate.name)}
                   </span>
                   <span className="min-w-0">
-                    <span className="block font-medium">{candidate.name}</span>
+                    <span className="block font-bold tracking-tight">
+                      {candidate.name}
+                    </span>
                     <span className="text-muted-foreground block truncate text-xs">
                       {candidate.email}
                     </span>

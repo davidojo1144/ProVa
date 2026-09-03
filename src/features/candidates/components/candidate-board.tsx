@@ -68,31 +68,34 @@ export function CandidateBoard({
               }}
               onDrop={(event) => handleDrop(event, stage.value)}
               className={cn(
-                "bg-muted/40 flex min-h-72 snap-start flex-col gap-3 rounded-xl p-2.5 transition-colors",
-                isDropTarget && "bg-primary/5 ring-primary/40 ring-2",
+                "bg-muted flex min-h-72 snap-start flex-col overflow-hidden rounded-lg transition-colors duration-200",
+                isDropTarget && "bg-primary/10 outline-primary outline-2",
               )}
             >
-              <header className="flex items-center gap-2 px-1">
-                <span
-                  className={cn("size-2 rounded-full", stage.accentClass)}
-                  aria-hidden
-                />
-                <h3 className="text-sm font-medium">{stage.label}</h3>
-                <span className="text-muted-foreground text-xs tabular-nums">
+              {/* Each column is headed by its own solid colour block. */}
+              <header
+                className={cn(
+                  "flex items-center gap-2 px-3 py-2.5",
+                  stage.solidClass,
+                )}
+              >
+                <h3 className="label-caps">{stage.label}</h3>
+                {/* bg-current tints correctly on both light and dark blocks. */}
+                <span className="rounded-sm bg-current/15 px-1.5 py-0.5 text-xs font-bold tabular-nums">
                   {stageCandidates.length}
                 </span>
                 <Button
                   variant="ghost"
-                  size="icon-xs"
-                  className="text-muted-foreground ml-auto"
+                  size="icon-sm"
+                  className="-mr-1.5 ml-auto text-current hover:bg-current/15 hover:text-current"
                   aria-label={`Add candidate to ${stage.label}`}
                   onClick={() => onAdd(stage.value)}
                 >
-                  <Plus />
+                  <Plus className="size-4" />
                 </Button>
               </header>
 
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 p-2.5">
                 {stageCandidates.map((candidate) => (
                   <CandidateCard
                     key={candidate.id}
@@ -110,7 +113,7 @@ export function CandidateBoard({
                 ))}
 
                 {stageCandidates.length === 0 && (
-                  <p className="text-muted-foreground/70 rounded-lg border border-dashed px-3 py-6 text-center text-xs">
+                  <p className="text-muted-foreground/70 border-foreground/10 rounded-md border-2 border-dashed px-3 py-6 text-center text-xs">
                     {stage.hint}
                   </p>
                 )}

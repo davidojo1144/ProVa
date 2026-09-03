@@ -19,7 +19,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { RatingStars } from "@/features/candidates/components/rating-stars";
 import { StageSelect } from "@/features/candidates/components/stage-select";
 import { useCandidateActions } from "@/features/candidates/hooks/use-candidate-actions";
+import { STAGE_META } from "@/features/candidates/lib/stages";
 import { formatDate, formatRelativeTime, initials } from "@/lib/format";
+import { cn } from "@/lib/utils";
 
 interface CandidateDetailSheetProps {
   candidate: Candidate | null;
@@ -67,24 +69,36 @@ function CandidateDetail({
 
   return (
     <>
-      {/* pr-12 keeps the header clear of the sheet's close button. */}
-      <SheetHeader className="gap-3 pr-12">
+      {/* The panel opens on the candidate's stage colour, so context is immediate. */}
+      <SheetHeader
+        className={cn(
+          "gap-4 p-5 pr-12",
+          STAGE_META[candidate.stage].solidClass,
+        )}
+      >
         <div className="flex items-start gap-3">
-          <span className="bg-muted text-muted-foreground flex size-11 shrink-0 items-center justify-center rounded-full text-sm font-medium">
+          <span className="flex size-12 shrink-0 items-center justify-center rounded-md bg-current/15 text-base font-extrabold">
             {initials(candidate.name)}
           </span>
           <div className="min-w-0 flex-1">
-            <SheetTitle className="truncate">{candidate.name}</SheetTitle>
-            <SheetDescription className="truncate">
+            <SheetTitle className="truncate text-lg font-extrabold tracking-tight text-current">
+              {candidate.name}
+            </SheetTitle>
+            <SheetDescription className="truncate font-medium text-current opacity-80">
               {candidate.role}
             </SheetDescription>
           </div>
-          <Button variant="outline" size="sm" onClick={onEdit}>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onEdit}
+            className="hover:bg-background hover:text-foreground hover:border-background border-current/40 text-current"
+          >
             Edit
           </Button>
         </div>
 
-        <dl className="text-muted-foreground grid gap-1.5 text-xs">
+        <dl className="grid gap-1.5 text-xs opacity-90">
           <ContactRow icon={<Mail className="size-3.5" />} label="Email">
             <a
               href={`mailto:${candidate.email}`}
@@ -141,7 +155,7 @@ function CandidateDetail({
 
         <div className="grid gap-4 sm:grid-cols-2">
           <section className="flex flex-col gap-1.5">
-            <h3 className="text-xs font-medium">Stage</h3>
+            <h3 className="label-caps text-muted-foreground">Stage</h3>
             <StageSelect
               value={candidate.stage}
               ariaLabel="Move candidate to stage"
@@ -150,14 +164,14 @@ function CandidateDetail({
           </section>
 
           <section className="flex flex-col gap-1.5">
-            <h3 className="text-xs font-medium">Rating</h3>
+            <h3 className="label-caps text-muted-foreground">Rating</h3>
             <div className="flex h-8 items-center gap-2">
               <RatingStars
                 size="md"
                 value={candidate.rating}
                 onChange={(rating) => actions.rate(candidate, rating)}
               />
-              <span className="text-muted-foreground text-xs">
+              <span className="text-muted-foreground text-xs font-bold tabular-nums">
                 {candidate.rating > 0 ? `${candidate.rating}/5` : "Unrated"}
               </span>
             </div>
@@ -167,10 +181,10 @@ function CandidateDetail({
         <Separator />
 
         <section className="flex flex-col gap-3">
-          <h3 className="text-sm font-medium">
+          <h3 className="label-caps text-muted-foreground flex items-center gap-2">
             Notes
             {candidate.notes.length > 0 && (
-              <span className="text-muted-foreground ml-1.5 text-xs font-normal">
+              <span className="bg-muted text-foreground rounded-sm px-1.5 py-0.5 tabular-nums">
                 {candidate.notes.length}
               </span>
             )}
@@ -202,7 +216,7 @@ function CandidateDetail({
               {candidate.notes.map((item) => (
                 <li
                   key={item.id}
-                  className="group/note bg-muted/50 flex items-start gap-2 rounded-lg p-3"
+                  className="group/note bg-muted flex items-start gap-2 rounded-md p-3"
                 >
                   <div className="min-w-0 flex-1">
                     <p className="text-sm wrap-break-word whitespace-pre-wrap">
@@ -230,12 +244,12 @@ function CandidateDetail({
         <Separator />
 
         <section className="flex flex-col gap-3">
-          <h3 className="text-sm font-medium">Activity</h3>
+          <h3 className="label-caps text-muted-foreground">Activity</h3>
           <ol className="flex flex-col gap-2.5">
             {candidate.activity.slice(0, 8).map((entry) => (
               <li key={entry.id} className="flex items-start gap-2.5 text-xs">
                 <span
-                  className="bg-border mt-1 size-1.5 shrink-0 rounded-full"
+                  className="bg-foreground/30 mt-1.5 size-1.5 shrink-0 rounded-[1px]"
                   aria-hidden
                 />
                 <span className="flex-1">{entry.message}</span>

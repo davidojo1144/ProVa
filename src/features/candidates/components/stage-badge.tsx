@@ -16,7 +16,7 @@ export function StageBadge({
   return (
     <Badge
       variant="outline"
-      className={cn("border-transparent ring-1", meta.badgeClass, className)}
+      className={cn("border-transparent", meta.softClass, className)}
     >
       {meta.label}
     </Badge>

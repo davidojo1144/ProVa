@@ -129,7 +129,7 @@ export function CandidateToolbar({
                     closeOnClick={false}
                   >
                     <span
-                      className={cn("size-2 rounded-full", stage.accentClass)}
+                      className={cn("size-2.5 rounded-sm", stage.dotClass)}
                       aria-hidden
                     />
                     {stage.label}
@@ -191,8 +191,8 @@ export function CandidateToolbar({
 
       {filtered && (
         <div className="text-muted-foreground flex items-center gap-2 text-xs">
-          <span>
-            Showing {resultCount} of {totalCount} candidates
+          <span className="label-caps">
+            {resultCount} of {totalCount} candidates
           </span>
           <Button
             variant="link"

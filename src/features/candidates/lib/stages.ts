@@ -7,9 +7,14 @@ interface StageMeta {
   label: string;
   /** Short description shown on empty columns. */
   hint: string;
-  /** Tailwind classes for the stage badge/accent. */
-  badgeClass: string;
-  accentClass: string;
+  /** Saturated block — column headers and other colour-blocked surfaces. */
+  solidClass: string;
+  /** Tinted block — badges and quieter surfaces. */
+  softClass: string;
+  /** Bare colour, for dots and rules. */
+  dotClass: string;
+  /** Left edge on candidate cards. Written out in full so Tailwind sees it. */
+  edgeClass: string;
 }
 
 export const STAGE_META: Record<Stage, StageMeta> = {
@@ -17,49 +22,55 @@ export const STAGE_META: Record<Stage, StageMeta> = {
     value: "applied",
     label: "Applied",
     hint: "New applications land here",
-    badgeClass:
-      "bg-slate-500/10 text-slate-700 dark:text-slate-300 ring-slate-500/20",
-    accentClass: "bg-slate-400",
+    solidClass: "bg-brand-ink text-background",
+    softClass: "bg-surface-slate text-foreground",
+    dotClass: "bg-brand-ink",
+    edgeClass: "border-l-brand-ink",
   },
   interview: {
     value: "interview",
     label: "Interview",
     hint: "Screening and interviews",
-    badgeClass:
-      "bg-blue-500/10 text-blue-700 dark:text-blue-300 ring-blue-500/20",
-    accentClass: "bg-blue-500",
+    solidClass: "bg-brand-blue text-white",
+    softClass: "bg-surface-blue text-brand-blue-strong",
+    dotClass: "bg-brand-blue",
+    edgeClass: "border-l-brand-blue",
   },
   test: {
     value: "test",
     label: "Test",
     hint: "Take-home or technical assessment",
-    badgeClass:
-      "bg-violet-500/10 text-violet-700 dark:text-violet-300 ring-violet-500/20",
-    accentClass: "bg-violet-500",
+    solidClass: "bg-brand-violet text-white",
+    softClass: "bg-surface-violet text-brand-violet",
+    dotClass: "bg-brand-violet",
+    edgeClass: "border-l-brand-violet",
   },
   offer: {
     value: "offer",
     label: "Offer",
     hint: "Offer extended",
-    badgeClass:
-      "bg-amber-500/10 text-amber-700 dark:text-amber-300 ring-amber-500/20",
-    accentClass: "bg-amber-500",
+    solidClass: "bg-brand-amber text-brand-ink",
+    softClass: "bg-surface-amber text-brand-amber-strong",
+    dotClass: "bg-brand-amber",
+    edgeClass: "border-l-brand-amber",
   },
   accepted: {
     value: "accepted",
     label: "Accepted",
     hint: "Signed and hired",
-    badgeClass:
-      "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 ring-emerald-500/20",
-    accentClass: "bg-emerald-500",
+    solidClass: "bg-brand-emerald text-white",
+    softClass: "bg-surface-emerald text-brand-emerald-strong",
+    dotClass: "bg-brand-emerald",
+    edgeClass: "border-l-brand-emerald",
   },
   rejected: {
     value: "rejected",
     label: "Rejected",
     hint: "Not moving forward",
-    badgeClass:
-      "bg-rose-500/10 text-rose-700 dark:text-rose-300 ring-rose-500/20",
-    accentClass: "bg-rose-500",
+    solidClass: "bg-brand-rose text-white",
+    softClass: "bg-surface-rose text-brand-rose",
+    dotClass: "bg-brand-rose",
+    edgeClass: "border-l-brand-rose",
   },
 };
 

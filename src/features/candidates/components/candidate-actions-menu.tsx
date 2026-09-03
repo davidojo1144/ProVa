@@ -59,7 +59,7 @@ export function CandidateActionsMenu({
               onClick={() => actions.move(candidate, stage.value as Stage)}
             >
               <span
-                className={cn("size-2 rounded-full", stage.accentClass)}
+                className={cn("size-2.5 rounded-sm", stage.dotClass)}
                 aria-hidden
               />
               {stage.label}

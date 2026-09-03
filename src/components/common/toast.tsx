@@ -107,7 +107,7 @@ function ToastCard({
     <div
       role={meta.role}
       className={cn(
-        "bg-popover text-popover-foreground ring-foreground/10 pointer-events-auto flex w-full items-start gap-2.5 rounded-lg border-l-4 p-3 shadow-lg ring-1",
+        "bg-popover text-popover-foreground border-border pointer-events-auto flex w-full items-start gap-2.5 rounded-md border-2 border-l-8 p-3.5",
         meta.border,
         meta.tint,
       )}

@@ -111,163 +111,182 @@ export function HiringTracker() {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-[120rem] flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
-      <header className="flex flex-wrap items-start justify-between gap-3">
-        <div className="min-w-0">
-          <h1 className="text-title font-semibold tracking-tight">
-            Hiring Tracker
-          </h1>
-          <p className="text-muted-foreground text-body">
-            Track every applicant from first application to signed offer.
-          </p>
+    <div className="flex flex-1 flex-col">
+      {/* Solid colour block, decorated with flat geometry rather than depth. */}
+      <header className="bg-brand-blue relative overflow-hidden text-white">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
+          <div className="absolute -top-24 -right-16 size-72 rounded-full bg-white/10" />
+          <div className="absolute right-40 -bottom-28 size-52 rotate-12 rounded-lg bg-white/5" />
+          <div className="absolute -bottom-16 -left-10 size-40 rotate-45 rounded-lg bg-black/5" />
         </div>
-        <div className="flex w-full items-center gap-2 sm:w-auto">
-          <ThemeToggle />
-          <DropdownMenu>
-            <DropdownMenuTrigger
-              render={
-                <Button
-                  variant="outline"
-                  size="icon"
-                  aria-label="Data options"
-                />
-              }
+
+        <div className="relative mx-auto flex w-full max-w-[120rem] flex-wrap items-end justify-between gap-4 px-4 py-8 sm:px-6 lg:px-10 lg:py-10">
+          <div className="min-w-0">
+            <p className="label-caps text-white/70">ProVA</p>
+            <h1 className="text-title mt-1 leading-none font-extrabold">
+              Hiring Tracker
+            </h1>
+            <p className="text-body mt-2 max-w-md text-white/80">
+              Track every applicant from first application to signed offer.
+            </p>
+          </div>
+          <div className="flex w-full items-center gap-2 sm:w-auto">
+            <ThemeToggle className="hover:text-brand-blue-strong border-white/40 text-white hover:border-white hover:bg-white" />
+            <DropdownMenu>
+              <DropdownMenuTrigger
+                render={
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    aria-label="Data options"
+                    className="hover:text-brand-blue-strong border-white/40 text-white hover:border-white hover:bg-white"
+                  />
+                }
+              >
+                <MoreVertical />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-52">
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>
+                    <Database className="mr-1.5 inline size-3" />
+                    Demo data
+                  </DropdownMenuLabel>
+                  <DropdownMenuItem
+                    onClick={() => actions.loadSample(createSampleCandidates())}
+                  >
+                    <Sparkles />
+                    Load sample pipeline
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    variant="destructive"
+                    disabled={candidates.length === 0}
+                    onClick={() => actions.clearAll()}
+                  >
+                    <Trash2 />
+                    Clear all candidates
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Button
+              onClick={() => openAdd()}
+              className="bg-background text-brand-blue-strong hover:bg-background ml-auto hover:brightness-95 sm:ml-0"
             >
-              <MoreVertical />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-52">
-              <DropdownMenuGroup>
-                <DropdownMenuLabel>
-                  <Database className="mr-1.5 inline size-3" />
-                  Demo data
-                </DropdownMenuLabel>
-                <DropdownMenuItem
-                  onClick={() => actions.loadSample(createSampleCandidates())}
-                >
-                  <Sparkles />
-                  Load sample pipeline
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  variant="destructive"
-                  disabled={candidates.length === 0}
-                  onClick={() => actions.clearAll()}
-                >
-                  <Trash2 />
-                  Clear all candidates
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Button onClick={() => openAdd()} className="ml-auto sm:ml-0">
-            <Plus />
-            Add candidate
-          </Button>
+              <Plus />
+              Add candidate
+            </Button>
+          </div>
         </div>
       </header>
 
-      {!mounted ? (
-        <TrackerSkeleton />
-      ) : candidates.length === 0 ? (
-        <NoCandidates
-          onAdd={() => openAdd()}
-          onSeed={() => actions.loadSample(createSampleCandidates())}
-        />
-      ) : (
-        <>
-          <PipelineStats candidates={candidates} />
+      <div className="mx-auto flex w-full max-w-[120rem] flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
+        {!mounted ? (
+          <TrackerSkeleton />
+        ) : candidates.length === 0 ? (
+          <NoCandidates
+            onAdd={() => openAdd()}
+            onSeed={() => actions.loadSample(createSampleCandidates())}
+          />
+        ) : (
+          <>
+            <PipelineStats candidates={candidates} />
 
-          <Tabs defaultValue="board" className="gap-4">
-            <CandidateToolbar
-              filters={filters}
-              onChange={setFilters}
-              resultCount={visible.length}
-              totalCount={candidates.length}
-              viewSwitch={
-                <TabsList>
-                  <TabsTrigger value="board" className="gap-1.5">
-                    <KanbanSquare className="size-3.5" />
-                    Board
-                  </TabsTrigger>
-                  <TabsTrigger value="list" className="gap-1.5">
-                    <Rows3 className="size-3.5" />
-                    List
-                  </TabsTrigger>
-                </TabsList>
-              }
-            />
+            <Tabs defaultValue="board" className="gap-4">
+              <CandidateToolbar
+                filters={filters}
+                onChange={setFilters}
+                resultCount={visible.length}
+                totalCount={candidates.length}
+                viewSwitch={
+                  <TabsList>
+                    <TabsTrigger value="board" className="gap-1.5">
+                      <KanbanSquare className="size-3.5" />
+                      Board
+                    </TabsTrigger>
+                    <TabsTrigger value="list" className="gap-1.5">
+                      <Rows3 className="size-3.5" />
+                      List
+                    </TabsTrigger>
+                  </TabsList>
+                }
+              />
 
-            {visible.length === 0 ? (
-              <NoResults onClear={() => setFilters(DEFAULT_FILTERS)} />
-            ) : (
-              <>
-                <TabsContent value="board">
-                  <CandidateBoard
-                    candidates={visible}
-                    onOpen={openDetail}
-                    onEdit={openEdit}
-                    onDelete={setPendingDelete}
-                    onAdd={openAdd}
-                  />
-                </TabsContent>
-                <TabsContent value="list">
-                  <CandidateTable
-                    candidates={visible}
-                    onOpen={openDetail}
-                    onEdit={openEdit}
-                    onDelete={setPendingDelete}
-                  />
-                </TabsContent>
-              </>
-            )}
-          </Tabs>
-        </>
-      )}
+              {visible.length === 0 ? (
+                <NoResults onClear={() => setFilters(DEFAULT_FILTERS)} />
+              ) : (
+                <>
+                  <TabsContent value="board">
+                    <CandidateBoard
+                      candidates={visible}
+                      onOpen={openDetail}
+                      onEdit={openEdit}
+                      onDelete={setPendingDelete}
+                      onAdd={openAdd}
+                    />
+                  </TabsContent>
+                  <TabsContent value="list">
+                    <CandidateTable
+                      candidates={visible}
+                      onOpen={openDetail}
+                      onEdit={openEdit}
+                      onDelete={setPendingDelete}
+                    />
+                  </TabsContent>
+                </>
+              )}
+            </Tabs>
+          </>
+        )}
 
-      {formUsed && (
-        <CandidateFormDialog
-          open={formOpen}
-          onOpenChange={setFormOpen}
-          candidate={editing}
-          defaultStage={formStage}
-        />
-      )}
+        {formUsed && (
+          <CandidateFormDialog
+            open={formOpen}
+            onOpenChange={setFormOpen}
+            candidate={editing}
+            defaultStage={formStage}
+          />
+        )}
 
-      {detailUsed && (
-        <CandidateDetailSheet
-          candidate={detailCandidate}
-          onOpenChange={(open) => !open && setDetailId(null)}
-          onEdit={(candidate) => {
-            setDetailId(null);
-            openEdit(candidate);
-          }}
-        />
-      )}
+        {detailUsed && (
+          <CandidateDetailSheet
+            candidate={detailCandidate}
+            onOpenChange={(open) => !open && setDetailId(null)}
+            onEdit={(candidate) => {
+              setDetailId(null);
+              openEdit(candidate);
+            }}
+          />
+        )}
 
-      <AlertDialog
-        open={Boolean(pendingDelete)}
-        onOpenChange={(open) => !open && setPendingDelete(null)}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>Delete candidate?</AlertDialogTitle>
-            <AlertDialogDescription>
-              {pendingDelete?.name} and their notes will be removed from the
-              tracker. This cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={() => {
-                if (pendingDelete) actions.remove(pendingDelete);
-                setPendingDelete(null);
-              }}
-            >
-              Delete
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        <AlertDialog
+          open={Boolean(pendingDelete)}
+          onOpenChange={(open) => !open && setPendingDelete(null)}
+        >
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete candidate?</AlertDialogTitle>
+              <AlertDialogDescription>
+                {pendingDelete?.name} and their notes will be removed from the
+                tracker. This cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => {
+                  if (pendingDelete) actions.remove(pendingDelete);
+                  setPendingDelete(null);
+                }}
+              >
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </div>
     </div>
   );
 }
@@ -278,7 +297,7 @@ function TrackerSkeleton() {
     <div className="flex flex-col gap-6" aria-hidden>
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
         {Array.from({ length: 5 }).map((_, index) => (
-          <div key={index} className="bg-muted h-20 animate-pulse rounded-xl" />
+          <div key={index} className="bg-muted h-20 animate-pulse rounded-lg" />
         ))}
       </div>
       <div className="bg-muted h-9 animate-pulse rounded-lg" />
@@ -286,7 +305,7 @@ function TrackerSkeleton() {
         {Array.from({ length: 6 }).map((_, index) => (
           <div
             key={index}
-            className="bg-muted h-48 animate-pulse rounded-xl not-first:max-sm:hidden"
+            className="bg-muted h-48 animate-pulse rounded-lg not-first:max-sm:hidden"
           />
         ))}
       </div>
