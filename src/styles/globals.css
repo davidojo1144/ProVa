@@ -15,8 +15,24 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
+
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-blue-strong: var(--brand-blue-strong);
+  --color-brand-emerald: var(--brand-emerald);
+  --color-brand-emerald-strong: var(--brand-emerald-strong);
+  --color-brand-amber: var(--brand-amber);
+  --color-brand-amber-strong: var(--brand-amber-strong);
+  --color-brand-violet: var(--brand-violet);
+  --color-brand-rose: var(--brand-rose);
+  --color-brand-ink: var(--brand-ink);
+
+  --color-surface-blue: var(--surface-blue);
+  --color-surface-emerald: var(--surface-emerald);
+  --color-surface-amber: var(--surface-amber);
+  --color-surface-violet: var(--surface-violet);
+  --color-surface-rose: var(--surface-rose);
+  --color-surface-slate: var(--surface-slate);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -56,75 +72,133 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Flat palette — solid, high-contrast, no gradients between steps. */
+  --background: #ffffff;
+  --foreground: #111827;
+
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+
+  /* shadcn's "secondary"/"accent" slots are quiet surfaces, not brand colour;
+     the brand accents live in the --brand-* tokens below. */
+  --secondary: #f3f4f6;
+  --secondary-foreground: #111827;
+  --muted: #f3f4f6;
+  --muted-foreground: #6b7280;
+  --accent: #eef2f7;
+  --accent-foreground: #111827;
+
+  --destructive: #ef4444;
+  --border: #e5e7eb;
+  --input: #f3f4f6;
+  --ring: #3b82f6;
+
+  /* Brand accents, used for colour blocking. */
+  --brand-blue: #3b82f6;
+  --brand-blue-strong: #2563eb;
+  --brand-emerald: #10b981;
+  --brand-emerald-strong: #059669;
+  --brand-amber: #f59e0b;
+  --brand-amber-strong: #d97706;
+  --brand-violet: #8b5cf6;
+  --brand-rose: #f43f5e;
+  --brand-ink: #111827;
+
+  /* Tinted surfaces for colour-block cards. */
+  --surface-blue: #eff6ff;
+  --surface-emerald: #ecfdf5;
+  --surface-amber: #fffbeb;
+  --surface-violet: #f5f3ff;
+  --surface-rose: #fff1f2;
+  --surface-slate: #f3f4f6;
+
+  --chart-1: #3b82f6;
+  --chart-2: #10b981;
+  --chart-3: #f59e0b;
+  --chart-4: #8b5cf6;
+  --chart-5: #f43f5e;
+
+  --radius: 0.5rem;
+
+  --sidebar: #f3f4f6;
+  --sidebar-foreground: #111827;
+  --sidebar-primary: #3b82f6;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e5e7eb;
+  --sidebar-accent-foreground: #111827;
+  --sidebar-border: #e5e7eb;
+  --sidebar-ring: #3b82f6;
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Same flat system inverted: solid ink surfaces, accents lifted for contrast. */
+  --background: #0b0f17;
+  --foreground: #f9fafb;
+
+  --card: #131a26;
+  --card-foreground: #f9fafb;
+  --popover: #131a26;
+  --popover-foreground: #f9fafb;
+
+  --primary: #60a5fa;
+  --primary-foreground: #0b0f17;
+
+  --secondary: #1b2434;
+  --secondary-foreground: #f9fafb;
+  --muted: #1b2434;
+  --muted-foreground: #9ca3af;
+  --accent: #212b3b;
+  --accent-foreground: #f9fafb;
+
+  --destructive: #f87171;
+  --border: #212b3b;
+  --input: #1b2434;
+  --ring: #60a5fa;
+
+  --brand-blue: #60a5fa;
+  --brand-blue-strong: #3b82f6;
+  --brand-emerald: #34d399;
+  --brand-emerald-strong: #10b981;
+  --brand-amber: #fbbf24;
+  --brand-amber-strong: #f59e0b;
+  --brand-violet: #a78bfa;
+  --brand-rose: #fb7185;
+  --brand-ink: #f9fafb;
+
+  --surface-blue: #14243d;
+  --surface-emerald: #0e2b23;
+  --surface-amber: #2b2110;
+  --surface-violet: #201a3a;
+  --surface-rose: #2d1520;
+  --surface-slate: #1b2434;
+
+  --chart-1: #60a5fa;
+  --chart-2: #34d399;
+  --chart-3: #fbbf24;
+  --chart-4: #a78bfa;
+  --chart-5: #fb7185;
+
+  --sidebar: #131a26;
+  --sidebar-foreground: #f9fafb;
+  --sidebar-primary: #60a5fa;
+  --sidebar-primary-foreground: #0b0f17;
+  --sidebar-accent: #212b3b;
+  --sidebar-accent-foreground: #f9fafb;
+  --sidebar-border: #212b3b;
+  --sidebar-ring: #60a5fa;
 }
 
 @layer base {
+  :root {
+    --font-sans:
+      var(--font-outfit), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
@@ -136,6 +210,32 @@
     /* Every rem-based size scales with the viewport from this one knob. */
     font-size: clamp(0.9375rem, 0.875rem + 0.25vw, 1.0625rem);
   }
+
+  /* Headings carry the hierarchy, so they run bold and tight. */
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-bold;
+    letter-spacing: -0.02em;
+  }
+
+  /* Flat design has no z-axis: nothing casts a shadow, anywhere. */
+  *,
+  *::before,
+  *::after {
+    box-shadow: none !important;
+  }
+
+  /* With no shadow to soften it, focus has to be a hard, solid outline. */
+  :focus-visible {
+    @apply ring-ring ring-offset-background rounded-md ring-2 ring-offset-2;
+    outline: none;
+  }
+}
+
+@utility label-caps {
+  @apply text-xs font-semibold tracking-wider uppercase;
 }
 
 /* Spring stack for toasts: mass 1, stiffness 180, damping 20 — sampled as a
