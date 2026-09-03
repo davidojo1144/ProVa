@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 
 import { Button } from "@/components/ui/button";
 import { useMounted } from "@/hooks/use-mounted";
+import { haptic } from "@/lib/haptics";
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -17,7 +18,10 @@ export function ThemeToggle() {
       aria-label="Toggle theme"
       disabled={!mounted}
       className={!mounted ? "opacity-0" : undefined}
-      onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
+      onClick={() => {
+        haptic("tap");
+        setTheme(resolvedTheme === "dark" ? "light" : "dark");
+      }}
     >
       {mounted && resolvedTheme === "dark" ? (
         <Sun className="size-4" />

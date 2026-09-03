@@ -1,6 +1,6 @@
 "use client";
 
-import { toast } from "sonner";
+import { notify } from "@/components/common/toast";
 
 import type { Candidate, CandidateDraft, Stage } from "@/types/candidate";
 
@@ -27,7 +27,7 @@ export function useCandidateActions() {
   return {
     add(draft: CandidateDraft) {
       const candidate = addCandidate(draft);
-      toast.success(`${candidate.name} added`, {
+      notify.success(`${candidate.name} added`, {
         description: `Now in ${STAGE_META[candidate.stage].label}.`,
       });
       return candidate;
@@ -35,14 +35,14 @@ export function useCandidateActions() {
 
     update(candidate: Candidate, draft: CandidateDraft) {
       updateCandidate(candidate.id, draft);
-      toast.success("Changes saved", {
+      notify.success("Changes saved", {
         description: `${draft.name}'s details are up to date.`,
       });
     },
 
     remove(candidate: Candidate) {
       removeCandidate(candidate.id);
-      toast(`${candidate.name} removed`, {
+      notify.warning(`${candidate.name} removed`, {
         description: "Their notes and history went with them.",
         action: {
           label: "Undo",
@@ -55,7 +55,7 @@ export function useCandidateActions() {
       if (candidate.stage === stage) return;
       const from = candidate.stage;
       moveCandidate(candidate.id, stage);
-      toast.success(`${candidate.name} → ${STAGE_META[stage].label}`, {
+      notify.success(`${candidate.name} → ${STAGE_META[stage].label}`, {
         description: `Moved out of ${STAGE_META[from].label}.`,
         action: {
           label: "Undo",
@@ -76,25 +76,25 @@ export function useCandidateActions() {
     rate(candidate: Candidate, rating: number) {
       const cleared = candidate.rating === rating;
       rateCandidate(candidate.id, rating);
-      toast.success(cleared ? "Rating cleared" : `Rated ${rating}/5`, {
+      notify.success(cleared ? "Rating cleared" : `Rated ${rating}/5`, {
         description: candidate.name,
       });
     },
 
     addNote(candidate: Candidate, body: string) {
       addNote(candidate.id, body);
-      toast.success("Note added", { description: candidate.name });
+      notify.success("Note added", { description: candidate.name });
     },
 
     removeNote(candidate: Candidate, noteId: string) {
       removeNote(candidate.id, noteId);
-      toast("Note deleted");
+      notify.info("Note deleted");
     },
 
     loadSample(candidates: Candidate[]) {
       const previous = useCandidatesStore.getState().candidates;
       replaceAll(candidates);
-      toast.success("Sample pipeline loaded", {
+      notify.success("Sample pipeline loaded", {
         description: `${candidates.length} candidates added.`,
         action: {
           label: "Undo",
@@ -107,7 +107,7 @@ export function useCandidateActions() {
       const previous = useCandidatesStore.getState().candidates;
       if (previous.length === 0) return;
       replaceAll([]);
-      toast("All candidates cleared", {
+      notify.warning("All candidates cleared", {
         description: `${previous.length} removed from the tracker.`,
         action: {
           label: "Undo",

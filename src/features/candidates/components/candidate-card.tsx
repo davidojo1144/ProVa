@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { CandidateActionsMenu } from "@/features/candidates/components/candidate-actions-menu";
 import { RatingStars } from "@/features/candidates/components/rating-stars";
 import { formatRelativeTime } from "@/lib/format";
+import { haptic } from "@/lib/haptics";
 import { cn } from "@/lib/utils";
 
 interface CandidateCardProps {
@@ -35,6 +36,7 @@ export function CandidateCard({
       onDragStart={(event) => {
         event.dataTransfer.setData("text/plain", candidate.id);
         event.dataTransfer.effectAllowed = "move";
+        haptic("impact");
         onDragStart();
       }}
       onDragEnd={onDragEnd}

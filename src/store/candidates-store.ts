@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 import type {
   Activity,
@@ -22,6 +22,44 @@ function uid() {
 function logActivity(type: ActivityType, message: string): Activity {
   return { id: uid(), type, message, createdAt: new Date().toISOString() };
 }
+
+/**
+ * Writes can fail for real reasons — a full quota, or private-mode Safari
+ * refusing storage — and silently losing data is the worst outcome for a
+ * tracker. The toast module is pulled in lazily to keep this file UI-free.
+ */
+function reportStorageFailure() {
+  void import("@/components/common/toast").then(({ notify }) => {
+    notify.error("Changes could not be saved", {
+      description:
+        "This browser is blocking local storage, so your edits will be lost on refresh.",
+    });
+  });
+}
+
+const guardedStorage = createJSONStorage(() => ({
+  getItem: (name: string) => {
+    try {
+      return localStorage.getItem(name);
+    } catch {
+      return null;
+    }
+  },
+  setItem: (name: string, value: string) => {
+    try {
+      localStorage.setItem(name, value);
+    } catch {
+      reportStorageFailure();
+    }
+  },
+  removeItem: (name: string) => {
+    try {
+      localStorage.removeItem(name);
+    } catch {
+      // Nothing to recover from a failed delete.
+    }
+  },
+}));
 
 interface CandidatesState {
   candidates: Candidate[];
@@ -182,6 +220,7 @@ export const useCandidatesStore = create<CandidatesState>()(
     {
       name: STORAGE_KEY,
       version: 1,
+      storage: guardedStorage,
     },
   ),
 );
