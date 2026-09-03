@@ -23,13 +23,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useCandidateActions } from "@/features/candidates/hooks/use-candidate-actions";
 import { STAGE_LIST } from "@/features/candidates/lib/stages";
 import {
   candidateSchema,
   parseTags,
   type CandidateFormValues,
 } from "@/features/candidates/schemas/candidate-schema";
-import { useCandidatesStore } from "@/store/candidates-store";
 import { cn } from "@/lib/utils";
 
 interface CandidateFormDialogProps {
@@ -54,7 +54,8 @@ export function CandidateFormDialog({
 }: CandidateFormDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      {/* Caps at the viewport so the form stays scrollable on short screens. */}
+      <DialogContent className="max-h-[calc(100dvh-2rem)] overflow-y-auto sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>
             {candidate ? "Edit candidate" : "Add candidate"}
@@ -87,8 +88,7 @@ function CandidateForm({
   defaultStage: Stage;
   onDone: () => void;
 }) {
-  const addCandidate = useCandidatesStore((state) => state.addCandidate);
-  const updateCandidate = useCandidatesStore((state) => state.updateCandidate);
+  const actions = useCandidateActions();
 
   const {
     register,
@@ -124,9 +124,9 @@ function CandidateForm({
     };
 
     if (candidate) {
-      updateCandidate(candidate.id, draft);
+      actions.update(candidate, draft);
     } else {
-      addCandidate(draft);
+      actions.add(draft);
     }
 
     onDone();

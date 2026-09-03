@@ -22,22 +22,31 @@ export function CandidateTable({
 }: CandidateTableProps) {
   return (
     <div className="ring-foreground/10 overflow-x-auto rounded-xl ring-1">
-      <table className="w-full min-w-max border-collapse text-sm">
+      <table className="w-full border-collapse text-sm">
         <thead>
           <tr className="text-muted-foreground border-border border-b text-left text-xs">
             <th scope="col" className="px-4 py-2.5 font-medium">
               Candidate
             </th>
-            <th scope="col" className="px-4 py-2.5 font-medium">
+            <th
+              scope="col"
+              className="hidden px-4 py-2.5 font-medium md:table-cell"
+            >
               Role
             </th>
             <th scope="col" className="px-4 py-2.5 font-medium">
               Stage
             </th>
-            <th scope="col" className="px-4 py-2.5 font-medium">
+            <th
+              scope="col"
+              className="hidden px-4 py-2.5 font-medium sm:table-cell"
+            >
               Rating
             </th>
-            <th scope="col" className="px-4 py-2.5 font-medium">
+            <th
+              scope="col"
+              className="hidden px-4 py-2.5 font-medium lg:table-cell"
+            >
               Updated
             </th>
             <th scope="col" className="px-4 py-2.5">
@@ -60,21 +69,25 @@ export function CandidateTable({
                   <span className="bg-muted text-muted-foreground flex size-8 shrink-0 items-center justify-center rounded-full text-xs font-medium">
                     {initials(candidate.name)}
                   </span>
-                  <span>
+                  <span className="min-w-0">
                     <span className="block font-medium">{candidate.name}</span>
-                    <span className="text-muted-foreground block text-xs">
+                    <span className="text-muted-foreground block truncate text-xs">
                       {candidate.email}
+                    </span>
+                    {/* Role rides along with the name once its column is hidden. */}
+                    <span className="text-muted-foreground block text-xs md:hidden">
+                      {candidate.role}
                     </span>
                   </span>
                 </button>
               </td>
-              <td className="text-muted-foreground px-4 py-2.5">
+              <td className="text-muted-foreground hidden px-4 py-2.5 md:table-cell">
                 {candidate.role}
               </td>
               <td className="px-4 py-2.5">
                 <StageBadge stage={candidate.stage} />
               </td>
-              <td className="px-4 py-2.5">
+              <td className="hidden px-4 py-2.5 sm:table-cell">
                 {candidate.rating > 0 ? (
                   <RatingStars value={candidate.rating} />
                 ) : (
@@ -83,7 +96,7 @@ export function CandidateTable({
                   </span>
                 )}
               </td>
-              <td className="text-muted-foreground px-4 py-2.5 text-xs whitespace-nowrap">
+              <td className="text-muted-foreground hidden px-4 py-2.5 text-xs whitespace-nowrap lg:table-cell">
                 {formatRelativeTime(candidate.updatedAt)}
               </td>
               <td className="px-2 py-2.5">

@@ -1,7 +1,15 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { KanbanSquare, Plus, Rows3 } from "lucide-react";
+import {
+  Database,
+  KanbanSquare,
+  MoreVertical,
+  Plus,
+  Rows3,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
 
 import type { Candidate, Stage } from "@/types/candidate";
 
@@ -16,6 +24,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { CandidateBoard } from "@/features/candidates/components/candidate-board";
@@ -34,6 +50,7 @@ import {
   hasActiveFilters,
   type CandidateFilters,
 } from "@/features/candidates/lib/filters";
+import { useCandidateActions } from "@/features/candidates/hooks/use-candidate-actions";
 import { createSampleCandidates } from "@/features/candidates/lib/sample-data";
 import { useMounted } from "@/hooks/use-mounted";
 import { useCandidatesStore } from "@/store/candidates-store";
@@ -41,8 +58,7 @@ import { useCandidatesStore } from "@/store/candidates-store";
 export function HiringTracker() {
   const mounted = useMounted();
   const candidates = useCandidatesStore((state) => state.candidates);
-  const removeCandidate = useCandidatesStore((state) => state.removeCandidate);
-  const replaceAll = useCandidatesStore((state) => state.replaceAll);
+  const actions = useCandidateActions();
 
   const [filters, setFilters] = useState<CandidateFilters>(DEFAULT_FILTERS);
   const [formOpen, setFormOpen] = useState(false);
@@ -72,7 +88,7 @@ export function HiringTracker() {
   };
 
   return (
-    <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:py-10">
+    <div className="mx-auto flex w-full max-w-[120rem] flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-xl font-semibold tracking-tight">
@@ -84,6 +100,41 @@ export function HiringTracker() {
         </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={
+                <Button
+                  variant="outline"
+                  size="icon"
+                  aria-label="Data options"
+                />
+              }
+            >
+              <MoreVertical />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-52">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>
+                  <Database className="mr-1.5 inline size-3" />
+                  Demo data
+                </DropdownMenuLabel>
+                <DropdownMenuItem
+                  onClick={() => actions.loadSample(createSampleCandidates())}
+                >
+                  <Sparkles />
+                  Load sample pipeline
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  variant="destructive"
+                  disabled={candidates.length === 0}
+                  onClick={() => actions.clearAll()}
+                >
+                  <Trash2 />
+                  Clear all candidates
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button onClick={() => openAdd()}>
             <Plus />
             Add candidate
@@ -96,7 +147,7 @@ export function HiringTracker() {
       ) : candidates.length === 0 ? (
         <NoCandidates
           onAdd={() => openAdd()}
-          onSeed={() => replaceAll(createSampleCandidates())}
+          onSeed={() => actions.loadSample(createSampleCandidates())}
         />
       ) : (
         <>
@@ -187,7 +238,7 @@ export function HiringTracker() {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => {
-                if (pendingDelete) removeCandidate(pendingDelete.id);
+                if (pendingDelete) actions.remove(pendingDelete);
                 setPendingDelete(null);
               }}
             >
@@ -212,7 +263,10 @@ function TrackerSkeleton() {
       <div className="bg-muted h-9 animate-pulse rounded-lg" />
       <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-6">
         {Array.from({ length: 6 }).map((_, index) => (
-          <div key={index} className="bg-muted h-48 animate-pulse rounded-xl" />
+          <div
+            key={index}
+            className="bg-muted h-48 animate-pulse rounded-xl not-first:max-sm:hidden"
+          />
         ))}
       </div>
     </div>

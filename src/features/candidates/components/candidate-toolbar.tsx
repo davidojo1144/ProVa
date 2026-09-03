@@ -10,6 +10,7 @@ import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -70,8 +71,8 @@ export function CandidateToolbar({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex flex-wrap items-center gap-2">
-        <div className="relative min-w-56 flex-1">
+      <div className="flex flex-col gap-2 lg:flex-row lg:items-center">
+        <div className="relative w-full lg:max-w-sm">
           <Search
             className="text-muted-foreground pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2"
             aria-hidden
@@ -98,74 +99,81 @@ export function CandidateToolbar({
           )}
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger render={<Button variant="outline" />}>
-            <ListFilter />
-            Stage
-            {filters.stages.length > 0 && (
-              <Badge variant="secondary" className="ml-0.5">
-                {filters.stages.length}
-              </Badge>
-            )}
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-44">
-            <DropdownMenuLabel>Filter by stage</DropdownMenuLabel>
-            {STAGE_LIST.map((stage) => (
-              <DropdownMenuCheckboxItem
-                key={stage.value}
-                checked={filters.stages.includes(stage.value)}
-                onCheckedChange={() => toggleStage(stage.value)}
-                closeOnClick={false}
-              >
-                <span
-                  className={cn("size-2 rounded-full", stage.accentClass)}
-                  aria-hidden
-                />
-                {stage.label}
-              </DropdownMenuCheckboxItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {/* Controls scroll sideways on narrow phones instead of wrapping raggedly. */}
+        <div className="-mx-4 flex items-center gap-2 overflow-x-auto px-4 pb-0.5 lg:mx-0 lg:ml-auto lg:overflow-visible lg:px-0 lg:pb-0">
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={<Button variant="outline" className="shrink-0" />}
+            >
+              <ListFilter />
+              Stage
+              {filters.stages.length > 0 && (
+                <Badge variant="secondary" className="ml-0.5">
+                  {filters.stages.length}
+                </Badge>
+              )}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-44">
+              <DropdownMenuGroup>
+                <DropdownMenuLabel>Filter by stage</DropdownMenuLabel>
+                {STAGE_LIST.map((stage) => (
+                  <DropdownMenuCheckboxItem
+                    key={stage.value}
+                    checked={filters.stages.includes(stage.value)}
+                    onCheckedChange={() => toggleStage(stage.value)}
+                    closeOnClick={false}
+                  >
+                    <span
+                      className={cn("size-2 rounded-full", stage.accentClass)}
+                      aria-hidden
+                    />
+                    {stage.label}
+                  </DropdownMenuCheckboxItem>
+                ))}
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-        <Select
-          items={RATING_ITEMS}
-          value={String(filters.minRating)}
-          onValueChange={(value) =>
-            onChange({ ...filters, minRating: Number(value) })
-          }
-        >
-          <SelectTrigger aria-label="Filter by rating">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {RATING_ITEMS.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <Select
+            items={RATING_ITEMS}
+            value={String(filters.minRating)}
+            onValueChange={(value) =>
+              onChange({ ...filters, minRating: Number(value) })
+            }
+          >
+            <SelectTrigger aria-label="Filter by rating" className="shrink-0">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {RATING_ITEMS.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        <Select
-          items={SORT_ITEMS}
-          value={filters.sort}
-          onValueChange={(value) =>
-            onChange({ ...filters, sort: value as SortKey })
-          }
-        >
-          <SelectTrigger aria-label="Sort candidates">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {SORT_ITEMS.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
-                {item.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <Select
+            items={SORT_ITEMS}
+            value={filters.sort}
+            onValueChange={(value) =>
+              onChange({ ...filters, sort: value as SortKey })
+            }
+          >
+            <SelectTrigger aria-label="Sort candidates" className="shrink-0">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {SORT_ITEMS.map((item) => (
+                <SelectItem key={item.value} value={item.value}>
+                  {item.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-        {viewSwitch}
+          <div className="shrink-0">{viewSwitch}</div>
+        </div>
       </div>
 
       {filtered && (

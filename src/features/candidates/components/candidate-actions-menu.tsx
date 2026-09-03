@@ -8,13 +8,14 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useCandidateActions } from "@/features/candidates/hooks/use-candidate-actions";
 import { STAGE_LIST } from "@/features/candidates/lib/stages";
-import { useCandidatesStore } from "@/store/candidates-store";
 import { cn } from "@/lib/utils";
 
 interface CandidateActionsMenuProps {
@@ -31,7 +32,7 @@ export function CandidateActionsMenu({
   onDelete,
   className,
 }: CandidateActionsMenuProps) {
-  const moveCandidate = useCandidatesStore((state) => state.moveCandidate);
+  const actions = useCandidateActions();
 
   return (
     <DropdownMenu>
@@ -48,20 +49,23 @@ export function CandidateActionsMenu({
         <MoreVertical />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-44">
-        <DropdownMenuLabel>Move to stage</DropdownMenuLabel>
-        {STAGE_LIST.map((stage) => (
-          <DropdownMenuItem
-            key={stage.value}
-            disabled={stage.value === candidate.stage}
-            onClick={() => moveCandidate(candidate.id, stage.value as Stage)}
-          >
-            <span
-              className={cn("size-2 rounded-full", stage.accentClass)}
-              aria-hidden
-            />
-            {stage.label}
-          </DropdownMenuItem>
-        ))}
+        {/* Base UI requires a group label to live inside a menu group. */}
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Move to stage</DropdownMenuLabel>
+          {STAGE_LIST.map((stage) => (
+            <DropdownMenuItem
+              key={stage.value}
+              disabled={stage.value === candidate.stage}
+              onClick={() => actions.move(candidate, stage.value as Stage)}
+            >
+              <span
+                className={cn("size-2 rounded-full", stage.accentClass)}
+                aria-hidden
+              />
+              {stage.label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={onEdit}>
           <Pencil />

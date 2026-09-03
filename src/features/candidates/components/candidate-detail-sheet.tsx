@@ -24,8 +24,8 @@ import {
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { RatingStars } from "@/features/candidates/components/rating-stars";
+import { useCandidateActions } from "@/features/candidates/hooks/use-candidate-actions";
 import { STAGE_LIST } from "@/features/candidates/lib/stages";
-import { useCandidatesStore } from "@/store/candidates-store";
 import { formatDate, formatRelativeTime, initials } from "@/lib/format";
 
 interface CandidateDetailSheetProps {
@@ -46,7 +46,7 @@ export function CandidateDetailSheet({
 }: CandidateDetailSheetProps) {
   return (
     <Sheet open={Boolean(candidate)} onOpenChange={onOpenChange}>
-      <SheetContent className="w-full gap-0 overflow-y-auto sm:max-w-md">
+      <SheetContent className="gap-0 overflow-y-auto data-[side=right]:w-full data-[side=right]:sm:max-w-md">
         {candidate && (
           <CandidateDetail
             key={candidate.id}
@@ -66,17 +66,14 @@ function CandidateDetail({
   candidate: Candidate;
   onEdit: () => void;
 }) {
-  const moveCandidate = useCandidatesStore((state) => state.moveCandidate);
-  const rateCandidate = useCandidatesStore((state) => state.rateCandidate);
-  const addNote = useCandidatesStore((state) => state.addNote);
-  const removeNote = useCandidatesStore((state) => state.removeNote);
+  const actions = useCandidateActions();
   const [note, setNote] = useState("");
 
   const submitNote = (event: React.FormEvent) => {
     event.preventDefault();
     const body = note.trim();
     if (!body) return;
-    addNote(candidate.id, body);
+    actions.addNote(candidate, body);
     setNote("");
   };
 
@@ -160,9 +157,7 @@ function CandidateDetail({
             <Select
               items={STAGE_ITEMS}
               value={candidate.stage}
-              onValueChange={(value) =>
-                moveCandidate(candidate.id, value as Stage)
-              }
+              onValueChange={(value) => actions.move(candidate, value as Stage)}
             >
               <SelectTrigger className="w-full">
                 <SelectValue />
@@ -183,7 +178,7 @@ function CandidateDetail({
               <RatingStars
                 size="md"
                 value={candidate.rating}
-                onChange={(rating) => rateCandidate(candidate.id, rating)}
+                onChange={(rating) => actions.rate(candidate, rating)}
               />
               <span className="text-muted-foreground text-xs">
                 {candidate.rating > 0 ? `${candidate.rating}/5` : "Unrated"}
@@ -245,7 +240,7 @@ function CandidateDetail({
                     size="icon-xs"
                     aria-label="Delete note"
                     className="text-muted-foreground opacity-0 transition-opacity group-hover/note:opacity-100 focus-visible:opacity-100"
-                    onClick={() => removeNote(candidate.id, item.id)}
+                    onClick={() => actions.removeNote(candidate, item.id)}
                   >
                     <Trash2 />
                   </Button>

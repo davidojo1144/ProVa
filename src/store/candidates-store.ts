@@ -32,6 +32,8 @@ interface CandidatesState {
   rateCandidate: (id: string, rating: number) => void;
   addNote: (id: string, body: string) => void;
   removeNote: (candidateId: string, noteId: string) => void;
+  /** Puts a deleted candidate back, so a delete can be undone. */
+  restoreCandidate: (candidate: Candidate) => void;
   replaceAll: (candidates: Candidate[]) => void;
   clearAll: () => void;
 }
@@ -165,6 +167,13 @@ export const useCandidatesStore = create<CandidatesState>()(
             }),
           ),
         })),
+
+      restoreCandidate: (candidate) =>
+        set((state) =>
+          state.candidates.some((existing) => existing.id === candidate.id)
+            ? state
+            : { candidates: [candidate, ...state.candidates] },
+        ),
 
       replaceAll: (candidates) => set({ candidates }),
 

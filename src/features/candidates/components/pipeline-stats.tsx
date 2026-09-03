@@ -31,10 +31,14 @@ export function PipelineStats({ candidates }: { candidates: Candidate[] }) {
 
   return (
     <dl className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
-      {tiles.map((tile) => (
+      {tiles.map((tile, index) => (
         <div
           key={tile.label}
-          className="bg-card ring-foreground/10 flex flex-col gap-0.5 rounded-xl p-3 ring-1"
+          className={cn(
+            "bg-card ring-foreground/10 flex flex-col gap-0.5 rounded-xl p-3 ring-1",
+            // The odd tile out stretches rather than leaving a gap.
+            index === tiles.length - 1 && "max-sm:col-span-2",
+          )}
         >
           <dt className="text-muted-foreground flex items-center gap-1.5 text-xs">
             {tile.accent && (

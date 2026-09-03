@@ -7,8 +7,8 @@ import type { Candidate, Stage } from "@/types/candidate";
 
 import { Button } from "@/components/ui/button";
 import { CandidateCard } from "@/features/candidates/components/candidate-card";
+import { useCandidateActions } from "@/features/candidates/hooks/use-candidate-actions";
 import { STAGE_LIST } from "@/features/candidates/lib/stages";
-import { useCandidatesStore } from "@/store/candidates-store";
 import { cn } from "@/lib/utils";
 
 interface CandidateBoardProps {
@@ -26,21 +26,22 @@ export function CandidateBoard({
   onDelete,
   onAdd,
 }: CandidateBoardProps) {
-  const moveCandidate = useCandidatesStore((state) => state.moveCandidate);
+  const actions = useCandidateActions();
   const [draggingId, setDraggingId] = useState<string | null>(null);
   const [dropStage, setDropStage] = useState<Stage | null>(null);
 
   const handleDrop = (event: React.DragEvent, stage: Stage) => {
     event.preventDefault();
     const id = event.dataTransfer.getData("text/plain");
-    if (id) moveCandidate(id, stage);
+    if (id) actions.moveById(id, stage);
     setDropStage(null);
     setDraggingId(null);
   };
 
   return (
-    <div className="-mx-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0">
-      <div className="grid min-w-max auto-cols-[minmax(15rem,1fr)] grid-flow-col gap-3">
+    <div className="-mx-4 snap-x snap-mandatory overflow-x-auto px-4 pb-2 sm:mx-0 sm:snap-none sm:px-0">
+      {/* Phones swipe one stage at a time; from tablets up the board fits the width. */}
+      <div className="grid min-w-max auto-cols-[85vw] grid-flow-col gap-3 sm:min-w-0 sm:auto-cols-auto sm:grid-flow-row sm:grid-cols-3 xl:grid-cols-6">
         {STAGE_LIST.map((stage) => {
           const stageCandidates = candidates.filter(
             (candidate) => candidate.stage === stage.value,
@@ -67,7 +68,7 @@ export function CandidateBoard({
               }}
               onDrop={(event) => handleDrop(event, stage.value)}
               className={cn(
-                "bg-muted/40 flex flex-col gap-3 rounded-xl p-2.5 transition-colors",
+                "bg-muted/40 flex min-h-72 snap-start flex-col gap-3 rounded-xl p-2.5 transition-colors",
                 isDropTarget && "bg-primary/5 ring-primary/40 ring-2",
               )}
             >
