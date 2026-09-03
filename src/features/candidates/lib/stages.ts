@@ -65,8 +65,14 @@ export const STAGE_META: Record<Stage, StageMeta> = {
 
 export const STAGE_LIST = STAGES.map((stage) => STAGE_META[stage]);
 
+/** Shape the Base UI select wants for rendering the selected label. */
+export const STAGE_SELECT_ITEMS = STAGE_LIST.map((stage) => ({
+  value: stage.value,
+  label: stage.label,
+}));
+
 /** Stages that represent an open, in-flight candidate. */
-export const ACTIVE_STAGES: Stage[] = ["applied", "interview", "test", "offer"];
+const ACTIVE_STAGES: Stage[] = ["applied", "interview", "test", "offer"];
 
 export function isActiveStage(stage: Stage) {
   return ACTIVE_STAGES.includes(stage);

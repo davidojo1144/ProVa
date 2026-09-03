@@ -3,17 +3,10 @@
 import { useState } from "react";
 import { ExternalLink, Mail, MapPin, Phone, Radio, Trash2 } from "lucide-react";
 
-import type { Candidate, Stage } from "@/types/candidate";
+import type { Candidate } from "@/types/candidate";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
@@ -24,8 +17,8 @@ import {
 } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { RatingStars } from "@/features/candidates/components/rating-stars";
+import { StageSelect } from "@/features/candidates/components/stage-select";
 import { useCandidateActions } from "@/features/candidates/hooks/use-candidate-actions";
-import { STAGE_LIST } from "@/features/candidates/lib/stages";
 import { formatDate, formatRelativeTime, initials } from "@/lib/format";
 
 interface CandidateDetailSheetProps {
@@ -33,11 +26,6 @@ interface CandidateDetailSheetProps {
   onOpenChange: (open: boolean) => void;
   onEdit: (candidate: Candidate) => void;
 }
-
-const STAGE_ITEMS = STAGE_LIST.map((stage) => ({
-  value: stage.value,
-  label: stage.label,
-}));
 
 export function CandidateDetailSheet({
   candidate,
@@ -154,22 +142,11 @@ function CandidateDetail({
         <div className="grid gap-4 sm:grid-cols-2">
           <section className="flex flex-col gap-1.5">
             <h3 className="text-xs font-medium">Stage</h3>
-            <Select
-              items={STAGE_ITEMS}
+            <StageSelect
               value={candidate.stage}
-              onValueChange={(value) => actions.move(candidate, value as Stage)}
-            >
-              <SelectTrigger className="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {STAGE_ITEMS.map((item) => (
-                  <SelectItem key={item.value} value={item.value}>
-                    {item.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+              ariaLabel="Move candidate to stage"
+              onChange={(stage) => actions.move(candidate, stage)}
+            />
           </section>
 
           <section className="flex flex-col gap-1.5">

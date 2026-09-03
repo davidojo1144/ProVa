@@ -16,15 +16,8 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { StageSelect } from "@/features/candidates/components/stage-select";
 import { useCandidateActions } from "@/features/candidates/hooks/use-candidate-actions";
-import { STAGE_LIST } from "@/features/candidates/lib/stages";
 import {
   candidateSchema,
   parseTags,
@@ -40,11 +33,6 @@ interface CandidateFormDialogProps {
   /** Stage pre-selected when adding from a board column. */
   defaultStage?: Stage;
 }
-
-const STAGE_ITEMS = STAGE_LIST.map((stage) => ({
-  value: stage.value,
-  label: stage.label,
-}));
 
 export function CandidateFormDialog({
   open,
@@ -174,22 +162,7 @@ function CandidateForm({
             control={control}
             name="stage"
             render={({ field }) => (
-              <Select
-                items={STAGE_ITEMS}
-                value={field.value}
-                onValueChange={(value) => field.onChange(value as Stage)}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {STAGE_ITEMS.map((item) => (
-                    <SelectItem key={item.value} value={item.value}>
-                      {item.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <StageSelect value={field.value} onChange={field.onChange} />
             )}
           />
         </Field>

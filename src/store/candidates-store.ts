@@ -9,15 +9,9 @@ import type {
   Stage,
 } from "@/types/candidate";
 import { STAGE_META } from "@/features/candidates/lib/stages";
+import { uid } from "@/lib/id";
 
 const STORAGE_KEY = "prova-hiring-tracker";
-
-function uid() {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
-    return crypto.randomUUID();
-  }
-  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
 
 function logActivity(type: ActivityType, message: string): Activity {
   return { id: uid(), type, message, createdAt: new Date().toISOString() };

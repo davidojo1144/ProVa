@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import dynamic from "next/dynamic";
 import {
   Database,
   KanbanSquare,
@@ -35,8 +36,6 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { CandidateBoard } from "@/features/candidates/components/candidate-board";
-import { CandidateDetailSheet } from "@/features/candidates/components/candidate-detail-sheet";
-import { CandidateFormDialog } from "@/features/candidates/components/candidate-form-dialog";
 import { CandidateTable } from "@/features/candidates/components/candidate-table";
 import { CandidateToolbar } from "@/features/candidates/components/candidate-toolbar";
 import {
@@ -47,13 +46,26 @@ import { PipelineStats } from "@/features/candidates/components/pipeline-stats";
 import {
   DEFAULT_FILTERS,
   filterCandidates,
-  hasActiveFilters,
   type CandidateFilters,
 } from "@/features/candidates/lib/filters";
 import { useCandidateActions } from "@/features/candidates/hooks/use-candidate-actions";
 import { createSampleCandidates } from "@/features/candidates/lib/sample-data";
 import { useMounted } from "@/hooks/use-mounted";
 import { useCandidatesStore } from "@/store/candidates-store";
+
+// The form, detail panel and delete prompt only matter once a user acts, so
+// their code (and react-hook-form + zod with it) stays out of the first load.
+const CandidateFormDialog = dynamic(() =>
+  import("@/features/candidates/components/candidate-form-dialog").then(
+    (mod) => mod.CandidateFormDialog,
+  ),
+);
+
+const CandidateDetailSheet = dynamic(() =>
+  import("@/features/candidates/components/candidate-detail-sheet").then(
+    (mod) => mod.CandidateDetailSheet,
+  ),
+);
 
 export function HiringTracker() {
   const mounted = useMounted();
@@ -66,6 +78,15 @@ export function HiringTracker() {
   const [formStage, setFormStage] = useState<Stage>("applied");
   const [detailId, setDetailId] = useState<string | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Candidate | null>(null);
+  // Once opened they stay mounted, so closing keeps its exit animation while
+  // the first open is what pulls the chunk down.
+  const [formUsed, setFormUsed] = useState(false);
+  const [detailUsed, setDetailUsed] = useState(false);
+
+  const openDetail = (candidate: Candidate) => {
+    setDetailUsed(true);
+    setDetailId(candidate.id);
+  };
 
   const visible = useMemo(
     () => filterCandidates(candidates, filters),
@@ -77,12 +98,14 @@ export function HiringTracker() {
     candidates.find((candidate) => candidate.id === detailId) ?? null;
 
   const openAdd = (stage: Stage = "applied") => {
+    setFormUsed(true);
     setEditing(null);
     setFormStage(stage);
     setFormOpen(true);
   };
 
   const openEdit = (candidate: Candidate) => {
+    setFormUsed(true);
     setEditing(candidate);
     setFormOpen(true);
   };
@@ -180,7 +203,7 @@ export function HiringTracker() {
                 <TabsContent value="board">
                   <CandidateBoard
                     candidates={visible}
-                    onOpen={(candidate) => setDetailId(candidate.id)}
+                    onOpen={openDetail}
                     onEdit={openEdit}
                     onDelete={setPendingDelete}
                     onAdd={openAdd}
@@ -189,7 +212,7 @@ export function HiringTracker() {
                 <TabsContent value="list">
                   <CandidateTable
                     candidates={visible}
-                    onOpen={(candidate) => setDetailId(candidate.id)}
+                    onOpen={openDetail}
                     onEdit={openEdit}
                     onDelete={setPendingDelete}
                   />
@@ -197,30 +220,28 @@ export function HiringTracker() {
               </>
             )}
           </Tabs>
-
-          {hasActiveFilters(filters) && visible.length > 0 && (
-            <p className="text-muted-foreground text-xs">
-              Filters apply to both views.
-            </p>
-          )}
         </>
       )}
 
-      <CandidateFormDialog
-        open={formOpen}
-        onOpenChange={setFormOpen}
-        candidate={editing}
-        defaultStage={formStage}
-      />
+      {formUsed && (
+        <CandidateFormDialog
+          open={formOpen}
+          onOpenChange={setFormOpen}
+          candidate={editing}
+          defaultStage={formStage}
+        />
+      )}
 
-      <CandidateDetailSheet
-        candidate={detailCandidate}
-        onOpenChange={(open) => !open && setDetailId(null)}
-        onEdit={(candidate) => {
-          setDetailId(null);
-          openEdit(candidate);
-        }}
-      />
+      {detailUsed && (
+        <CandidateDetailSheet
+          candidate={detailCandidate}
+          onOpenChange={(open) => !open && setDetailId(null)}
+          onEdit={(candidate) => {
+            setDetailId(null);
+            openEdit(candidate);
+          }}
+        />
+      )}
 
       <AlertDialog
         open={Boolean(pendingDelete)}

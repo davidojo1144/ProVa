@@ -1,5 +1,7 @@
 import type { Candidate, Stage } from "@/types/candidate";
 
+import { uid } from "@/lib/id";
+
 interface SampleSpec {
   name: string;
   email: string;
@@ -121,13 +123,6 @@ const SAMPLES: SampleSpec[] = [
 
 function daysAgo(days: number) {
   return new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString();
-}
-
-function uid() {
-  if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
-    return crypto.randomUUID();
-  }
-  return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 }
 
 /** Demo candidates so the board is not empty on a first visit. */
