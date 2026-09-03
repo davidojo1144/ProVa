@@ -1,6 +1,6 @@
 export { auth as proxy } from "@/lib/auth";
 
-// Add protected route prefixes here; unmatched routes stay public.
+// Replace with the route prefixes you want to protect; unmatched routes stay public.
 export const config = {
-  matcher: ["/dashboard/:path*"],
+  matcher: ["/protected/:path*"],
 };

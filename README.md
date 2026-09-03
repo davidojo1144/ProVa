@@ -1,4 +1,4 @@
-# ProVa
+# App
 
 Production-ready Next.js App Router boilerplate.
 
@@ -51,7 +51,7 @@ src/
   app/          # routes, layouts, loading/error/not-found
   components/
     ui/         # shadcn/ui primitives
-    common/      # shared app components (providers, header, theme toggle)
+    common/     # shared app components (providers, theme toggle)
   features/     # feature-scoped components, schemas, logic
   hooks/        # shared React hooks
   lib/          # cross-cutting utilities (auth, query client, seo, cn)
@@ -63,7 +63,7 @@ src/
 
 ## Auth
 
-Auth.js config lives in `src/lib/auth.ts` and is mounted at `src/app/api/auth/[...nextauth]/route.ts`. `src/proxy.ts` protects the routes listed in its `matcher` (defaults to `/dashboard/:path*`) — extend the matcher as new protected routes are added. The Credentials provider's `authorize` function is a stub; wire it up to your real user store before shipping.
+Auth.js config lives in `src/lib/auth.ts` and is mounted at `src/app/api/auth/[...nextauth]/route.ts`. `src/proxy.ts` runs on every request that matches its `matcher` (empty by default) — add route prefixes there as protected pages are built. The Credentials provider's `authorize` function is a stub; wire it up to your real user store before shipping.
 
 ## Git hooks
 

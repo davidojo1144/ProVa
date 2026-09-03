@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 
-const SITE_NAME = "ProVa";
-const SITE_DESCRIPTION =
-  "Production-ready Next.js App Router boilerplate with TypeScript, Tailwind CSS, Zustand, React Query, Auth.js, and shadcn/ui.";
+const SITE_NAME = "App";
+const SITE_DESCRIPTION = "Built with Next.js.";
 const SITE_URL = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
 
 export function constructMetadata({
