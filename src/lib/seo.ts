@@ -3,9 +3,24 @@ import type { Metadata } from "next";
 export const SITE_NAME = "ProVA Hiring Tracker";
 export const SITE_DESCRIPTION =
   "Track candidates through every hiring stage — applications, interviews, tests, offers — with notes, ratings and instant search.";
-export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
-).replace(/\/$/, "");
+/**
+ * `??` only falls back on null/undefined — an env var set to an empty string
+ * (as some hosts do for an unfilled value) sailed straight through and broke
+ * `new URL()` at build time. `VERCEL_URL` is set automatically by Vercel
+ * (server-side only, no NEXT_PUBLIC_ prefix, no protocol) and is the honest
+ * default for a deploy that hasn't set a custom domain yet.
+ */
+function resolveSiteUrl() {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (explicit) return explicit;
+
+  const vercelUrl = process.env.VERCEL_URL?.trim();
+  if (vercelUrl) return `https://${vercelUrl}`;
+
+  return "http://localhost:3000";
+}
+
+export const SITE_URL = resolveSiteUrl().replace(/\/$/, "");
 
 export function constructMetadata({
   title,
