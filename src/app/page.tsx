@@ -88,7 +88,9 @@ export default function LandingPage() {
             </h2>
           </div>
 
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {/* items-start: grid items default to stretch, which would force
+              every card to the height of its tallest sibling. */}
+          <div className="mt-12 grid items-start gap-6 md:grid-cols-3">
             {FEATURES.map((feature) => (
               <div
                 key={feature.word}

@@ -52,7 +52,12 @@ export function EvervaultCard({
   return (
     <div
       className={cn(
-        "relative flex aspect-square h-full w-full items-center justify-center bg-transparent p-0.5",
+        // aspect-square + a definite width is enough to size this on its
+        // own; h-full would instead chase whatever height a stretched
+        // ancestor happens to hand it (a CSS Grid item, say — grid items
+        // default to align-items: stretch, which makes h-full definite and
+        // then aspect-square blows the whole card up to match).
+        "relative flex aspect-square w-full items-center justify-center bg-transparent p-0.5",
         className,
       )}
     >
