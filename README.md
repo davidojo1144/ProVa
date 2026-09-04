@@ -30,6 +30,23 @@ in a deployed environment.
 | `npm run format` / `format:check` | Prettier                   |
 | `npm run type-check`              | `tsc --noEmit`             |
 
+### Git hooks
+
+Husky, lint-staged and Commitlint are installed, but `.husky/` is gitignored —
+hooks are a local, opt-in convenience here rather than an enforced gate, so a
+fresh clone's commits are never silently blocked by a missing or misconfigured
+hook. To turn them on locally:
+
+```bash
+npx husky init
+echo 'npx lint-staged' > .husky/pre-commit
+echo 'npx --no -- commitlint --edit "$1"' > .husky/commit-msg
+chmod +x .husky/pre-commit .husky/commit-msg
+```
+
+Without that, `npm run lint`, `npm run format` and `npm run type-check` still
+run the same checks on demand.
+
 ## Features
 
 **Candidate management** — add and edit candidates through one validated form
@@ -62,8 +79,9 @@ undo for every destructive action.
 
 **Next.js App Router + TypeScript.** The brief allows any stack; this one gives
 strict typing, a fast dev loop, and a straightforward deployment story. The app
-is one route — the tracker is a single workspace, and splitting it across pages
-would add navigation without adding clarity.
+is two routes: `/` pitches the product, `/hire` is the tracker itself — a
+single workspace with no further navigation inside it, since splitting the
+board across pages would add friction without adding clarity.
 
 **Zustand + `localStorage` for persistence, not a database.** The requirement is
 that data survives a refresh. A backend would mean hosting, schemas and auth for

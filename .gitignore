@@ -34,6 +34,9 @@ yarn-error.log*
 .env*
 !.env.example
 
+# git hooks (local only — see README's "Git hooks" section)
+/.husky
+
 # vercel
 .vercel
 
