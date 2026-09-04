@@ -33,10 +33,10 @@ export function ContainerScroll({
   return (
     <div
       ref={containerRef}
-      className="relative flex h-[52rem] items-center justify-center p-2 md:h-[70rem] md:p-20"
+      className="relative flex h-176 items-center justify-center p-2 sm:h-208 sm:p-6 md:h-240 md:p-12 lg:h-280 lg:p-20"
     >
       <div
-        className="relative w-full py-10 md:py-40"
+        className="relative w-full py-6 sm:py-10 md:py-24 lg:py-40"
         style={{ perspective: "1000px" }}
       >
         <motion.div
@@ -74,7 +74,7 @@ function ScrollCard({
         boxShadow:
           "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
       }}
-      className="border-border bg-muted mx-auto -mt-12 h-[26rem] w-full max-w-5xl rounded-lg border-4 p-2 md:h-[38rem] md:p-4"
+      className="border-border bg-muted mx-auto -mt-12 h-80 w-full max-w-5xl rounded-lg border-4 p-2 sm:h-104 md:h-128 md:p-4 lg:h-152"
     >
       <div className="bg-background size-full overflow-hidden rounded-md">
         {children}

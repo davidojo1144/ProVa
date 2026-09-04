@@ -11,6 +11,17 @@ const LAMP_SURFACE = "#080c14";
  * Conic "lamp" section header. The gradients are written inline with a brand
  * token rather than Tailwind gradient-stop utilities, which changed shape in
  * Tailwind v4 and no longer feed `--tw-gradient-stops` reliably.
+ *
+ * The decorative glow lives in its own `absolute inset-0` layer, fully
+ * decoupled from the content below it. The original port had the glow and
+ * the text as flex siblings with the text shifted up by a fixed 16rem
+ * `translate` — a fixed offset built for a full `min-h-screen` demo. Ported
+ * into a much shorter, fixed-height section, that offset reserved real
+ * layout space for the text at its untranslated position and then never
+ * gave it back, leaving a dead gap at the bottom that got proportionally
+ * worse the shorter the viewport — exactly what broke this on mobile.
+ * Isolating the glow removes the coupling that caused it, and the content
+ * now just centers in the container's actual height at every breakpoint.
  */
 export function LampContainer({
   children,
@@ -29,12 +40,17 @@ export function LampContainer({
   return (
     <div
       className={cn(
-        "relative z-0 flex min-h-[36rem] w-full flex-col items-center justify-center overflow-hidden",
+        "relative isolate flex min-h-104 w-full flex-col overflow-hidden sm:min-h-128 lg:min-h-152",
         className,
       )}
       style={{ backgroundColor: LAMP_SURFACE }}
     >
-      <div className="relative isolate z-0 flex w-full flex-1 scale-y-125 items-center justify-center">
+      {/* Glow layer: absolutely sized to the container, so nothing inside it
+          can ever feed back into how tall the container itself is. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 z-0 flex scale-y-125 items-center justify-center"
+      >
         <motion.div
           {...reveal}
           style={{
@@ -98,7 +114,9 @@ export function LampContainer({
         />
       </div>
 
-      <div className="relative z-50 flex -translate-y-64 flex-col items-center px-5 text-center">
+      {/* Content: centers in the section's real height, no manual offset
+          hack — just a small upward nudge so it sits under the beam. */}
+      <div className="relative z-10 flex flex-1 flex-col items-center justify-center px-5 py-10 text-center sm:-mt-8 lg:-mt-14">
         {children}
       </div>
     </div>
